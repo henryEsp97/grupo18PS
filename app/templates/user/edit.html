@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+{% block title %}Usuario{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <form class="create-forms"action="{{ url_for('user_edit', user_id=user.id) }}" method="POST">
+    <h2 style="display: flex; justify-content: center;">Editar un usuario</h2>
+    <div>
+      <label>Email <label></br>
+      <input type="email" name="email" required value="{{user.email}}"/>
+    </div>
+    <div>
+      <label>Nombre de usuario <label></br>
+      <input type="text" name="username" required value="{{user.username}}"/>
+    </div>
+    <div>
+      <label>Nombre <label></br>
+      <input type="text" name="first_name" required value="{{user.first_name}}"/>
+    </div>
+    <div>
+      <label>Apellido <label></br>
+      <input type="text" name="last_name" required value="{{user.last_name}}"/>
+    </div>
+    <div>
+    <label>Roles<label></br>
+    <select name="roles[]" size="2" multiple>
+      <option selected value=""> -- Elija roles -- </option>
+      {% for rol in roles%}
+        {% if rol in user.roles %}
+            <option selected value={{rol.id}} >{{rol.name}}</option>
+        {% else %}
+          <option value={{rol.id}} >{{rol.name}}</option>
+        {% endif %}
+      {% endfor %}
+    </select>
+    </div>
+    <div>
+      {% if user.bloqueado == True %}
+        <label>Usuario Bloqueado, (presione para desbloquearlo) <label>
+      {% else %}
+        {% if not es_admin %}
+          <label>Usuario no Bloqueado, (presione para bloquearlo) <label>
+        {% endif %}
+      {% endif %}
+      {% if not es_admin %}
+        <input type="checkbox"  value="True" name="bloqueado"/>
+      {% endif %}
+    </div>
+      <div>
+      {% if user.espera == True %}
+        <label>Usuario en espera, (presione para desbloquearlo) <label>
+        <input type="checkbox"  value="True" name="espera"/>
+      {% endif %}
+      
+    </div>
+    <div>
+      <button type="submit">Actualizar</button>
+      <button type="reset">Limpiar</button>
+    </>
+  </form>
+  <a href="{{ url_for('user_index') }}" class="link">Volver</a>
+{% endblock %}

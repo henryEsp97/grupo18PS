@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block title %}Crear punto{% endblock %}
+{% block head %}
+    {{ super() }}}
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" 
+    crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+
+{% endblock %}
+{% block content %}
+<h1>Crear punto de encuentro</h1>
+<form class="create-forms" action="{{ url_for('puntoEncuentro_create') }}" method="POST" id="id-form">
+    <h4 style="color: rgb(214, 3, 3);">{{error_message}}</h4>
+    <div>
+        <label>Nombre<label></br>
+        <input name="nombre" placeholder="Nombre"/>
+    </div>
+    <div>
+        <label>Dirección<label></br>
+        <input name="direccion" placeholder="Direccion"/>
+    </div>
+    <div>
+        <label>Estado<label></br>
+        <select name='estado'>
+            <option value=1>Publicado</option>
+            <option value=0>Despublicado</option>
+        </select>
+    </div>
+    <div>
+        <label>Teléfono<label></br>
+        <input name="telefono" placeholder="Telefono"/>
+    </div>
+    <div>
+    <div>
+        <label>Email<label></br>
+        <input name="email" placeholder="Email"/>
+        </div>   
+    </p>
+    <input type="text" name="lat" id = "lat" >
+    <input type="text" name="lng" id = "lng" >
+    <h4 style="color:black">Seleccione un punto en el mapa</h4>
+    <div class="map-container">
+        <div id="mapid"></div>
+    </div>
+    <br>
+    <div>
+        <button type="submit">Crear</button>
+        <button type="reset">Limpiar</button>
+    </div>
+</form>
+<a href="{{ url_for('puntoEncuentro_index') }}" class="btn btn-outline-dark" style="width: 100px;
+height: 50px;">Volver</a>
+    <script>
+    let punto = null;
+    </script>
+
+    <!-- Custom files-->
+    <script type = "module" src="../../static/js/punto/createPunto.js"></script>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block title %}Denuncias{% endblock %}
+{% block head %}
+    {{ super() }}
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" 
+    crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+{% endblock %}
+{% block content %}
+<form class="create-forms" id="id-form" action="{{ url_for('seguimiento_edit', seguimiento_id=seguimiento.id) }}" method="POST">
+    <h2>Modificar Seguimiento</h2>
+    <div>
+        <label>Descripcion<label>
+        <textarea name="descripcion" rows="10" cols="40">{{seguimiento.descripcion}}</textarea>
+    </div>
+    <div>
+        <button type="submit">Actualizar</button>
+        <button type="reset">Limpiar</button>
+    </div>
+</form>
+<a href="{{ url_for('denuncia_index') }}" class="btn btn-outline-dark" style="width: 100px;
+height: 50px;">Volver</a>
+
+
+<!-- Custom files-->
+<script type = "module" src="../../static/js/punto/createPunto.js"></script>
+{% endblock %}

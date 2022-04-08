@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+{% block title %}Denuncias{% endblock %}
+{% block head %}
+  {{ super() }}
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" 
+    crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+
+{% endblock %}
+{% block content %}
+  <form class="create-forms" action="{{ url_for('denuncia_create') }}" method="POST" id="id-form">
+    <h2 style="display: flex; justify-content: center;">Crear una denuncia</h2>
+    <div>
+      <label>Titulo<label>
+      <input type="text" name="titulo"required placeholder="Titulo"/>
+    </div>
+    <div>
+      <label>Descripcion<label>
+      <input type="text" required name="descripcion" placeholder="Descripcion"/>
+    </div>
+    <div>
+      <label>Apellido Denunciante<label>
+      <input type="text" name="apellido_denunciante" required placeholder="Apellido denunciante"/>
+    </div>
+    <div>
+      <label>Nombre Denunciante<label>
+      <input type="text" name="nombre_denunciante" required placeholder="Nombre denunciante"/>
+    </div>
+    <div>
+      <label>Telefono Denunciante<label>
+      <input type="text" name="telefono_denunciante" required placeholder="Telefono denunciante"/>
+    </div>
+    <div>
+      <label>Email Denunciante<label>
+      <input type="email" name="email_denunciante" required placeholder="Email denunciante"/>
+    </div>
+    <div>
+    <label>Categoria<label></br>
+    <select name="categoria">
+      <option value="Urgente">Urgente</option>
+      <option value="Advertencia">Advertencia</option>
+      <option value="Poco probable">Poco probable</option>
+    </select>
+    </div>
+    <br>
+    <input type="text" name="lat" id = "lat" >
+    <input type="text" name="lng" id = "lng" >
+    <h4>Seleccione un punto en el mapa</h4>
+    <div class="map-container">
+        <div id="mapid"></div>
+    </div>
+    
+    <div>
+      <button type="submit">Crear</button>
+      <button type="reset">Limpiar</button>
+    </div>
+    <a href="{{ url_for('denuncia_index') }}" class="btn btn-outline-dark" style="width: 100px;
+  height: 50px;">Volver</a>
+  </form>
+  
+
+  <script>
+    let punto = null;
+  </script>
+
+  <!-- Custom files-->
+  <script type = "module" src="../../static/js/punto/createPunto.js"></script>
+{% endblock %}

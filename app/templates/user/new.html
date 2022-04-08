@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block title %}Usuarios{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  
+  <form class="create-forms"action="{{ url_for('user_create') }}" method="POST">
+    <h2>Crear un usuario</h2>
+    <div>
+      <label>Email<label>
+      <input type="email" name="email"required placeholder="Correo"/>
+    </div>
+    <div>
+      <label>Nombre de usuario<label>
+      <input type="text" name="username"required placeholder="Nombre de usuario"/>
+    </div>
+    <div>
+      <label>Clave<label>
+      <input type="password" required name="password" placeholder="Clave"/>
+    </div>
+    <div>
+      <label>Nombre<label>
+      <input type="text" name="first_name" required placeholder="Nombre"/>
+    </div>
+    <div>
+      <label>Apellido<label>
+      <input type="text" name="last_name" required placeholder="Apellido"/>
+    </div>
+    <div>
+    <label>Roles<label>
+    <select name="roles[]" size="2" multiple>
+      <option selected value=""> -- Elija roles -- </option>
+      {% for rol in roles%}
+        <option value={{rol.id}}>{{rol.name}}</option>
+      {% endfor %}
+    </select>
+    </div>
+    <div>
+      <button type="submit">Actualizar</button>
+      <button type="reset">Limpiar</button>
+    </div>
+  </form>
+  <a href="{{ url_for('user_index') }}" class="link">Volver</a>
+{% endblock %}

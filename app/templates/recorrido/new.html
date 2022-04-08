@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+{% block title %}Recorridos{% endblock %}
+{% block head %}
+    {{ super() }}
+    <!-- Archivos de leaftlet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+
+  <!-- Leaflet-draw -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script> 
+    <!--  -->
+
+{% endblock %}
+{% block content %}
+
+<h1>Crear recorrido de evacuación</h1>
+<form class="create-forms" id="form" action="{{ url_for('recorrido_create') }}" method="POST" >
+    <h4 style="color: rgb(214, 3, 3);">{{error_message}}</h4>
+    <div>
+        <label>Nombre<label></br>
+        <input id= "nombre" name="nombre" placeholder="Nombre"/>
+    </div>
+    <div>
+        <label>Descripción<label></br>
+        <input id="descripcion" name="descripcion" placeholder="descripción"/>
+    </div>
+    <div>
+        <label>Estado<label></br>
+        <select id="estado" name='estado'>
+            <option value=1>Publicado</option>
+            <option value=0>Despublicado</option>
+        </select>
+    </div>
+    <input type="text" name="coord" id = "coord" >
+    
+    <h4 style="color:black">Marque un recorrido en el mapa</h4>
+    <div class="map-container">
+        <div id="mapid"></div>
+    </div>
+    <br>
+    <div>
+        <button type="submit">Crear</button>
+        <button type="reset">Limpiar</button>
+    </div>
+    <script>
+        let coord = null;
+    </script>
+    <script type = "module" src="../../static/js/recorrido/createRecorrido.js"></script>
+
+    <a href="{{ url_for('recorrido_index') }}" class="btn btn-outline-dark" style="width: 100px;
+height: 50px;">Volver</a>
+</form>
+
+{% endblock %}

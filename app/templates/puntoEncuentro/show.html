@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block title %}Ver punto{% endblock %}
+{% block head %}
+  {{ super() }}
+  <!-- Archivos de leaftlet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+
+  <!-- Leaflet-draw -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script> 
+
+
+{% endblock %}
+{% block content %}
+  <h1>Punto de encuentro {{punto.nombre}}</h1>
+  <div class="create-forms" >
+    <h7 style="color:black">Dirección: </h7> <h7>{{ punto.direccion }}</h7> <br>
+    <h7 style="color:black">Telefono: </h7> <h7>{{ punto.telefono }}</h7> <br>
+    <h7 style="color:black">Email: </h7> <h7>{{ punto.email }}</h7> <br>
+    {% if punto.estado==1 %}
+    <h7 style="color:black">Estado: </h7> <h7>Publicado </h7> <br>
+    {% else %}
+    <h7 style="color:black">Estado: </h7> <h7>Despublicado</h7> <br>
+    {% endif %}
+  
+    <div class="map-container" >
+      <div id="mapid"></div>
+    </div>
+
+  <a href="{{ url_for('puntoEncuentro_index') }}" class="link">Volver</a>
+  </div>
+
+  <script>
+    let punto = {{punto.coordenadas_tolist()|safe}};
+  </script>
+
+  <!-- Archivos propios -->
+  <script type="module" src="../../static/js/punto/indexPunto.js"></script>
+
+
+{% endblock %}

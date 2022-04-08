@@ -1,0 +1,130 @@
+{% extends "layout.html" %}
+{% block title %}Denuncias{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <h2 style="display: flex; justify-content: center; ">Denuncias</h2>
+  <form action="" method="GET">
+    <input type="search" placeholder="Buscar por titulo" name="q">
+    <button type="submit">Buscar</button>
+  </form>
+  <br>
+  <form action="" method="GET">
+    <input type="datetime-local" placeholder="Primera fecha" name="date1">
+    <input type="datetime-local" placeholder="Segunda fecha" name="date2">
+    <button type="submit">Buscar</button>
+  </form>
+  <div>
+  <a href="{{ url_for('denuncia_index') }}" class="link" method="GET">Todos</a>
+  <a href="{{ url_for('denuncia_sinConfirmar') }}" class="link" method="GET">Sin confirmar</a>
+  <a href="{{ url_for('denuncia_enCurso') }}" class="link" method="GET">En curso</a>
+  <a href="{{ url_for('denuncia_resuelta') }}" class="link"  method="GET">Resuelta</a>
+  <a href="{{ url_for('denuncia_cerrada') }}" class="link"  method="GET">Cerrada</a>
+  </div>
+  {%if denuncias.items %}
+  <div class="table-responsive">
+    <table class="table table-sm table-borderless mb-0">
+        <thead class="thead-dark">
+            <tr>
+                <th>#</th>
+                <th>Titulo</th>
+                <th>Fecha y hora creacion</th>
+                <th>Categoria</th>
+                <th>Estado</th>
+                <th>Asignado a</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for denuncia in denuncias.items %}
+            <tr>
+                <th scope="row">{{ loop.index }}</th>
+                <td>{{ denuncia.titulo }}</td>
+                <td>{{ denuncia.fecha_creacion }}</td>
+                {% for categoria in categorias %}
+                  {% if categoria.id == denuncia.categoria_id %}
+                    <td>{{categoria.name}}</td>
+                  {% endif %}
+                {% endfor %}
+                {% for estado in estados %}
+                  {% if estado.id == denuncia.estado_id %}
+                    <td>{{estado.name}}</td>
+                  {% endif %}
+                {% endfor %}
+                {% if denuncia.asignado_a == None %}
+                  <td>None</td>
+                {% else %}
+                  {% for user in users %}
+                    {% if user.id == denuncia.asignado_a %}
+                      <td>{{user.email}}</td>
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+                <td><a href="{{ url_for('denuncia_info', denuncia_id= denuncia.id ) }}" method="GET" class="link"> Mas info </a>
+                {% if has_permission(session["user2"].id, "denuncia_update") %}
+                <a href="{{ url_for('denuncia_edit', denuncia_id= denuncia.id ) }}" method="POST" class="link"> Editar </a>
+                {% endif %}
+                {% if denuncia.estado_id==3 %}
+                  <a href="{{ url_for('denuncia_confirmar', denuncia_id= denuncia.id ) }}" method="POST" class="link" onclick="return confirm('Confirmar denuncia de titulo {{denuncia.titulo}}')"> Confirmar</a>
+                  <a href="{{ url_for('denuncia_cerrar', denuncia_id= denuncia.id ) }}" method="POST" class="link" onclick="return confirm('Cerrar denuncia de titulo {{denuncia.titulo}}')"> Cerrar</a>
+                {% endif %}
+                {% if denuncia.estado_id==4 %}
+                  <a href="{{ url_for('denuncia_resolver', denuncia_id= denuncia.id ) }}" method="POST" class="link" onclick="return confirm('Resolver denuncia de titulo {{denuncia.titulo}}')"> Resolver</a>
+                  <a href="{{ url_for('denuncia_cerrar', denuncia_id= denuncia.id ) }}" method="POST" class="link" onclick="return confirm('Cerrar denuncia de titulo {{denuncia.titulo}}')"> Cerrar</a>
+                  <a href="{{ url_for('denuncia_seguimiento', denuncia_id= denuncia.id ) }}" method="POST" class="link"> Seguimiento </a>
+                  {% endif %}
+                {% if has_permission(session["user2"].id, "denuncia_destroy") %}
+                  <a href="{{ url_for('denuncia_destroy', denuncia_id= denuncia.id ) }}" method="POST" class="link" onclick="return confirm('Eliminar denuncia de titulo {{denuncia.titulo}}')"> Eliminar</a>  </li>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  </div>
+
+  <br>
+  <p>
+  {% if has_permission(session["user2"].id, "denuncia_create") %}
+  <a  style=" justify-content: left;" href="{{ url_for('denuncia_create') }}" class="link">Nuevo</a>
+  {% endif %}
+
+    <!-- Pagination Links-->
+    <div class="text-right" style="display: flex; justify-content: center;">
+      <a href="{{ url_for('denuncia_index', page=denuncias.prev_num) }}"
+        class="btn btn-outline-dark 
+        {% if denuncias.page == 1 %}disabled{% endif %}">
+          &laquo;
+      </a><!-- Loop through the number of pages to display a link for each-->
+      {% for page_num in denuncias.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+          {% if page_num %}
+    <!-- Check for the active page and set the link to "Active"-->
+              {% if denuncias.page == page_num %}
+              <a href="{{ url_for('denuncia_index', page=page_num) }}"
+                class="btn btn-dark">
+                  {{ page_num }}
+              </a>
+              {% else %}
+              <a href="{{ url_for('denuncia_index', page=page_num) }}"
+                class="btn btn-outline-dark">
+                  {{ page_num }}
+              </a>
+              {% endif %}
+          {% else %}
+              ...
+          {% endif %}
+      {% endfor %}    <a href="{{ url_for('denuncia_index', page=denuncias.next_num) }}"
+        class="btn btn-outline-dark 
+        {% if denuncias.page == denuncias.pages %}disabled{% endif %}">
+          &raquo;
+      </a>
+    </div>
+  </p>
+  {% else %}
+    <h3 style="display: flex; justify-content: center; ">No hay denuncias cargadas</h3>
+    {% if has_permission(session["user2"].id, "denuncia_create") %}
+    <a  style=" justify-content: left;" href="{{ url_for('denuncia_create') }}" class="link">Nuevo</a>
+    {% endif %}
+  {% endif %}
+{% endblock %}

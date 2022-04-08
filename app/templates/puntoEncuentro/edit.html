@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+{% block title %}Puntos de encuentro{% endblock %}
+{% block head %}
+    {{ super() }}
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" 
+    crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+{% endblock %}
+{% block content %}
+
+<form class="create-forms" id="id-form" action="{{ url_for('puntoEncuentro_update', id_punto=puntoEncuentro.id) }}" method="POST">
+    <h2>Modificar punto</h2>
+    <h4 style="color: rgb(214, 3, 3);">{{error_message}}</h4>
+    <div>
+        <label>Nombre<label>
+        <input name="nombre" placeholder="Nombre" value="{{puntoEncuentro.nombre}}" />
+    </div>
+    <div>
+        <label>Dirección<label>
+        <input name="direccion" placeholder="Direccion" value="{{puntoEncuentro.direccion}}" />
+    </div>
+    <div>
+        <label>Estado<label>
+        <select name='estado' >
+            {% if puntoEncuentro.estado==1 %}
+            <option value=1 selected>Publicado</option>
+            <option value=0>Despublicado</option>
+            {% else %}
+            <option value=1>Publicado</option>
+            <option value=0 selected>Despublicado</option>
+            {% endif %}
+        </select>
+    </div>
+    <div>
+        <label>Teléfono<label>
+        <input name="telefono" placeholder="Telefono" value="{{puntoEncuentro.telefono}}" />
+    </div>
+    <div>
+        <label>Email<label>
+        <input name="email" placeholder="Email" value="{{puntoEncuentro.email}}" />
+    </div>
+
+    <input type="text" name="lat" id = "lat" >
+    <input type="text" name="lng" id = "lng" >
+    <div class="map-container">
+        <div id="mapid"></div>
+    </div>
+
+        <button type="submit">Actualizar</button>
+        <button type="reset">Limpiar</button>
+    </div>
+</form>
+<a href="{{ url_for('puntoEncuentro_index') }}" class="btn btn-outline-dark" style="width: 100px;
+height: 50px;">Volver</a>
+    <script>
+        let punto = {{puntoEncuentro.coordenadas_tolist()|safe}};
+    </script>
+
+    <!-- Custom files-->
+    <script type = "module" src="../../static/js/punto/createPunto.js"></script>
+{% endblock %}

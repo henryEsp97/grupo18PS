@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{% block title %}Denuncias{% endblock %}
+{% block head %}
+    {{ super() }}
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" 
+    crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+{% endblock %}
+{% block content %}
+<form class="create-forms" id="id-form" action="{{ url_for('denuncia_edit', denuncia_id=denuncia.id) }}" method="POST">
+    <h2>Modificar denuncia</h2>
+    <div>
+        <label>Titulo<label>
+        <input name="titulo" placeholder="Titulo" value="{{denuncia.titulo}}" />
+    </div>
+    <div>
+        <label>Descripcion<label>
+        <input name="descripcion" placeholder="Descripcion" value="{{denuncia.descripcion}}" />
+    </div>
+    <div>
+        <label>Apellido denunciante<label>
+        <input name="apellido_denunciante" placeholder="Apellido_denunciante" value="{{denuncia.apellido_denunciante}}" />
+    </div>
+    <div>
+        <label>Nombre denunciante<label>
+        <input name="nombre_denunciante" placeholder="Nombre_denunciante" value="{{denuncia.nombre_denunciante}}" />
+    </div>
+    <div>
+        <label>Email denunciante<label>
+        <input name="email_denunciante" placeholder="Email_denunciante" value="{{denuncia.email_denunciante}}" />
+    </div>
+    <div>
+        <label>Telefono denunciante<label>
+        <input name="telefono_denunciante" placeholder="Telefono_denunciante" value="{{denuncia.telefono_denunciante}}" />
+    </div>
+    <div>
+        <label>Categoria<label></br>
+        <select name='categoria' >
+            {% if denuncia.categoria_id==1 %}
+            <option value="Urgente" selected>Urgente</option>
+            <option value="Advertencia">Advertencia</option>
+            <option value="Poco probable">Poco probable</option>
+            {% elif denuncia.categoria_id==2 %}
+            <option value="Urgente" >Urgente</option>
+            <option value="Advertencia" selected>Advertencia</option>
+            <option value="Poco probable">Poco probable</option>
+            {% else %}
+            <option value="Urgente">Urgente</option>
+            <option value="Advertencia">Advertencia</option>
+            <option value="Poco probable" selected>Poco probable</option>
+            {% endif %}
+        </select>
+    </div>
+
+    <input type="text" name="lat" id = "lat" >
+    <input type="text" name="lng" id = "lng" >
+    <div class="map-container">
+        <div id="mapid"></div>
+    </div>
+
+    <div>
+        <button type="submit">Actualizar</button>
+        <button type="reset">Limpiar</button>
+    </div>
+</form>
+<a href="{{ url_for('denuncia_index') }}" class="btn btn-outline-dark" style="width: 100px;
+height: 50px;">Volver</a>
+
+<script>
+    let punto = {{denuncia.coordenadas_tolist()|safe}};
+</script>
+
+<!-- Custom files-->
+<script type = "module" src="../../static/js/punto/createPunto.js"></script>
+{% endblock %}

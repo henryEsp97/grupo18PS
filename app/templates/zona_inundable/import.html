@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block title %}Importar csv{% endblock %}
+{% block head %}
+    {{ super() }}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% endblock %}
+{% block content %}
+    <h1>Importar zonas</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+      {{ form.csrf_token }}
+      {{ form.hidden_tag() }}
+      {{ form.file.label }}
+      {{ form.file }} 
+      <P><input type="submit" value="Importar"></P>
+    </form>
+
+  {% if form.file.errors %}
+    <ul class="errors">
+    {% for error in form.file.errors %}
+        <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+
+{% endblock %}

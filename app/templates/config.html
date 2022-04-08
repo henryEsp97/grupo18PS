@@ -1,0 +1,120 @@
+{% extends "layout.html" %}
+{% block title %}Configuracion{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+
+  <form class="conf-form"action="{{ url_for('configurado') }}" method="POST">
+    <h2>Configuración del sistema</h2>
+    <p>
+      <label>Elementos por página <label></br>
+      <input type = "number" name="numero" placeholder= 'numero' value = "{{cant}}" />
+    </p>
+    <p>
+      <label>Criterio de ordenación Usuarios <label></br>
+      <select name='orden_usuarios' >
+        {% if ordenU=='first_name' %}
+          <option value='first_name' selected> nombre</option>
+          <option value='last_name'> apellido</option>
+          <option value='email'> email</option>
+        {% else %}
+              {% if ordenU=='email' %}
+                <option value='first_name' > nombre</option>
+                <option value='last_name'> apellido</option>
+                <option value='email' selected> email</option>
+              {% else %}
+                <option value='first_name' > nombre</option>
+                <option value='last_name' selected> apellido</option>
+                <option value='email'> email</option>
+              {% endif %}
+        {% endif %}
+      </select>
+    </p>
+    <p>
+      <label>Criterio de ordenación Puntos de Encuentro <label></br>
+      <select name='orden_puntos'>
+        {% if ordenP=='nombre' %}
+          <option value='nombre' selected> nombre</option>
+          <option value='direccion'> direccion</option>
+          <option value='email'> email</option>
+        {% else %}
+              {% if ordenP=='email' %}
+                <option value='nombre' > nombre</option>
+                <option value='direccion'> direccion</option>
+                <option value='email' selected> email</option>
+              {% else %}
+                <option value='nombre' > nombre</option>
+                <option value='direccion' selected> direccion</option>
+                <option value='email'> email</option>
+              {% endif %}
+        {% endif %}
+      </select>
+    </p>
+    <p>
+      <label>Criterio de ordenación Denuncias <label></br>
+      <select name='orden_denuncias'>
+        {% if ordenP=='titulo' %}
+          <option value='nombre' selected> Titulo</option>
+          <option value='direccion'> direccion</option>
+          <option value='email'> email</option>
+        {% else %}
+              {% if ordenP=='fecha' %}
+                <option value='titulo' >Titulo</option>
+                <option value='fecha_creacion'>Fecha creacion</option>
+                <option value='fecha_cierre' selected>Fecha cierre</option>
+              {% else %}
+                <option value='titulo'>Titulo</option>
+                <option value='fecha_creacion' selected> Fecha creacion</option>
+                <option value='fecha_cierre'>Fecha cierre</option>
+              {% endif %}
+        {% endif %}
+      </select>
+    </p>
+    <p>
+      <label>Paleta de color privada <label></br>
+      <select name='colorPri'>
+        {% if coloresPriv=='naranja' %}
+        <option value='naranja'> Naranja</option>
+        <option value='azul'> Azul</option>
+        <option value='rojo'> Rojo</option>
+        {% else %}
+              {% if coloresPriv=='rojo' %}
+                <option value='rojo'> Rojo</option>
+                <option value='naranja'> Naranja</option>
+                <option value='azul'> Azul</option>
+              {% else %}
+              <option value='azul'> Azul</option>
+              <option value='rojo'> Rojo</option>
+              <option value='naranja'> Naranja</option>       
+              {% endif %}
+        {% endif %}
+      </select>
+    </p>
+    <p>
+      <label>Paleta de color pública <label></br>
+      <select name='colorPub'>
+        {% if coloresPub=='naranja' %}
+        <option value='naranja'> Naranja</option>
+        <option value='azul'> Azul</option>
+        <option value='rojo'> Rojo</option>
+        {% else %}
+              {% if coloresPub=='rojo' %}
+                <option value='rojo'> Rojo</option>
+                <option value='naranja'> Naranja</option>
+                <option value='azul'> Azul</option>
+              {% else %}
+              <option value='azul'> Azul</option>
+              <option value='rojo'> Rojo</option>
+              <option value='naranja'> Naranja</option>       
+              {% endif %}
+        {% endif %}
+      </select>
+    </p>
+    <p>
+      <input type="submit" value="Aceptar">
+
+    </p>
+  </form>
+  <a href="{{ url_for('home') }}" class="link">Volver</a>
+{% endblock %}

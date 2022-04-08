@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block title %}Denuncias{% endblock %}
+{% block head %}
+  {{ super() }}
+  <!-- Archivos de leaftlet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+
+  <!-- Leaflet-draw -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script> 
+
+{% endblock %}
+{% block content %}
+{% if denuncia %}
+  <div class="create-forms">
+  <h7 style="color:black">Descripcion: </h7> <h7>{{ denuncia.descripcion }} </h7> <br>
+  <h7 style="color:black">Fecha cierre: </h7> <h7>{{ denuncia.fecha_cierre }}</h7> <br>
+  <h7 style="color:black">Apellido denunicante: </h7> <h7>{{ denuncia.apellido_denunciante }}</h7> <br>
+  <h7 style="color:black">Nombre denunicante: </h7> <h7>{{ denuncia.nombre_denunciante }}<h7> <br>
+  <h7 style="color:black">Email denunicante: </h7> <h7>{{ denuncia.email_denunciante }}</h7> <br>
+  <h7 style="color:black">Telefono denunicante: </h7> <h7>{{ denuncia.telefono_denunciante }}</h7> <br>
+  <h7 style="color:black">Seguimientos:</h7> <br>
+  {% for seguimiento in seguimientos %}
+    {% for user in users %}
+      {% if user.id == seguimiento.autor %}
+        <h7>Autor: {{ user.email }}</h7> <br>
+      {% endif %}
+    {% endfor %}
+    <h7>Fecha: {{ seguimiento.fecha }}</h7> <br>
+    <h7>Descripcion: {{ seguimiento.descripcion }}</h7>
+    <br>
+    <td>
+      <a href="{{ url_for('seguimiento_edit', seguimiento_id= seguimiento.id ) }}" method="POST" class="link"> Editar </a>
+      <a href="{{ url_for('seguimiento_destroy', seguimiento_id= seguimiento.id ) }}" method="POST" class="link" onclick="return confirm('Eliminar seguimiento de fecha {{seguimiento.fecha}}')"> Eliminar</a>
+    </td>
+    <br>
+    <h6>---------------------------------------------</h6>
+  {% endfor %}
+  <br>
+
+  <div class="map-container" >
+    <div id="mapid"></div>
+  </div>
+  <script>
+    let punto = {{denuncia.coordenadas_tolist()|safe}};
+  </script>
+  <!-- Archivos propios -->
+  <script type="module" src="../../static/js/punto/indexPunto.js"></script>
+{% endif %}
+  <a href="{{ url_for('denuncia_index') }}" class="link">Volver</a>
+{% endblock %}
+

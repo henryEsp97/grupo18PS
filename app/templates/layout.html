@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      .naranja {
+        background-color: tomato;
+        color: white;
+      }
+      .azul {
+        background-color: rgb(74, 71, 255);
+        color: white;
+      }
+      .rojo {
+        background-color: rgb(255, 71, 71);
+        color: rgb(255, 255, 255);
+      }
+      .default {
+        background-color: rgb(71, 212, 255);
+        color: rgb(255, 255, 255);
+      }
+      </style>
+    {% block head %}
+    <!--<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" /> -->
+
+    <link  rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
+    <title>{% block title %}{% endblock %}</title>
+    {% endblock %}
+
+  </head>
+  {% if is_authenticated(session) %}
+  <body class = {{get_color_privado()}} >
+  {% else %}
+  <body class = {{get_color_publico()}} >
+  {% endif %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Logotipo</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarScroll">
+          <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{{ url_for('home') }}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('denuncia_index') }}">Denuncias</a>
+            </li>
+            {% if is_authenticated(session) %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('puntoEncuentro_index') }}">Puntos de encuentro</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('zonaInundable_index') }}">Zonas inundables</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('user_index') }}">Usuarios</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('config_index') }}">Configuración Sistema</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('recorrido_index') }}">Recorridos Evacuación</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Perfil
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                <li><a class="dropdown-item" href="#">Editar Perfil</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('auth_logout') }}">Cerrar Sesion</a></li>
+              </ul>
+            </li>
+            {% else %}
+              <li class="nav-item">
+                <a href="{{ url_for('auth_login') }}" class="nav-link" >Iniciar sesión</a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div id="content">
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul class=flashes>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}
+      {% endblock %}
+    </div>
+    </body>
+      {% block footer %}
+      <footer>
+        <h4 class="title"> Bomberos: 100 - Seguridad: 911 - Ambulancia: 107 - Prefectura: 106 -</h4>
+        <p>Copyright © 2021. LPSoft.</p>
+      </footer>
+  {% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ" crossorigin="anonymous"></script>
+</html>

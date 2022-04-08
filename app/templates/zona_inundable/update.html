@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block title %}Editar zona{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+    <h1>Editar zona</h1>
+    <form class="create-forms" action="{{ url_for('zonaInundable_update', id_zona=zona.id) }}" method="POST">
+        <h4 style="color: rgb(214, 3, 3);">{{error_message}}</h4>
+        <p>
+            <label>Código<label></br>
+            <input name="codigo" placeholder="Código" value="{{zona.codigo}}" />
+        </p>
+        <p>
+            <label>Estado<label></br>
+            <select name='estado' >
+                {% if zona.estado==1 %}
+                <option value=1 selected>Publicado</option>
+                <option value=0>Despublicado</option>
+                {% else %}
+                <option value=1>Publicado</option>
+                <option value=0 selected>Despublicado</option>
+                {% endif %}
+            </select>
+        </p>
+        <p>
+            <label>Color<label></br>
+            <select name='color' >
+                {% if zona.color== '#fb3715' %}
+                <option value= '#fb3715' selected>Rojo</option>
+                <option value= '#34f915' >Verde</option>
+                {% else %}
+                <option value='#fb3715'>Rojo</option>
+                <option value= '#34f915' selected>Verde</option>
+                {% endif %}
+            </select>
+        </p>
+        <input type="submit" value="Guardar">
+        </p>
+    </form>
+
+    <a href="{{ url_for('zonaInundable_index') }}" class="link">Volver</a>
+
+{% endblock %}

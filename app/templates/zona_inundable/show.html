@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block title %}Ver zona{% endblock %}
+{% block head %}
+  {{ super() }}
+  <!-- Archivos de leaftlet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+  crossorigin=""></script>
+
+  <!-- Leaflet-draw -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script> 
+
+{% endblock %}
+{% block content %}
+  <h1>Zona {{zona.nombre}}</h1>
+  <div class="create-forms" >
+    <h7 style="color:black">Código: </h7> <h7>{{ zona.codigo }}</h7> <br>
+    {% if zona.estado==1 %}
+    <h7 style="color:black">Estado: </h7> <h7>Publicado </h7> <br>
+    {% else %}
+    <h7 style="color:black">Estado: </h7> <h7>Despublicado</h7> <br>
+    {% endif %}
+  
+    <div class="map-container" >
+      <div id="mapid"></div>
+    </div>
+
+  <a href="{{ url_for('zonaInundable_index') }}" class="link">Volver</a>
+  </div>
+
+  <script>
+    let coord = {{zona.coordenadas_tolist()|safe}};
+    let color = "{{zona.color|safe}}";
+  </script>
+
+  <!-- Archivos propios -->
+  <script type="module" src="../../static/js/zonas/show.js"></script>
+
+
+{% endblock %}

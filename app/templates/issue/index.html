@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block title %}Consultas{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+<h1>Consultas</h1>
+{%if issues.items %}
+  <div class="table-responsive">
+    <table class="table table-sm table-borderless mb-0">
+        <thead class="thead-dark">
+            <tr>
+                <th>#</th>
+                <th>Email</th>
+                <th>descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for issue in issues.items %}
+            <tr>
+                <th scope="row">{{ loop.index }}</th>
+                <td>{{ issue.email }}</td>
+                <td>{{ issue.description }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  </div>
+
+  <br>
+  <p>
+  <a  style=" justify-content: left;" href="{{ url_for('user_create') }}" class="link">Nuevo</a>
+
+
+    <!-- Pagination Links-->
+    <div class="text-right" style="display: flex; justify-content: center;">
+      <a href="{{ url_for('issue_index', page=issues.prev_num) }}"
+        class="btn btn-outline-dark 
+        {% if issues.page == 1 %}disabled{% endif %}">
+          &laquo;
+      </a><!-- Loop through the number of pages to display a link for each-->
+      {% for page_num in issues.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+          {% if page_num %}
+    <!-- Check for the active page and set the link to "Active"-->
+              {% if issues.page == page_num %}
+              <a href="{{ url_for('issue_index', page=page_num) }}"
+                class="btn btn-dark">
+                  {{ page_num }}
+              </a>
+              {% else %}
+              <a href="{{ url_for('issue_index', page=page_num) }}"
+                class="btn btn-outline-dark">
+                  {{ page_num }}
+              </a>
+              {% endif %}
+          {% else %}
+              ...
+          {% endif %}
+      {% endfor %}    <a href="{{ url_for('issue_index', page=issues.next_num) }}"
+        class="btn btn-outline-dark 
+        {% if issues.page == issues.pages %}disabled{% endif %}">
+          &raquo;
+      </a>
+    </div>
+  </p>
+  {% else %}
+    <h3 style="display: flex; justify-content: center; ">No hay usuarios cargados</h3>
+  {% endif %}
+{% endblock %}
+
+
+
+
+
+
+
+
+ 
